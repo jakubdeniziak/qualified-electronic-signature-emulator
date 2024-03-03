@@ -2,6 +2,7 @@ import tkinter as tk
 
 from abc import ABC, abstractmethod
 from tkinter import filedialog
+from PIL import Image, ImageTk
 
 
 def choose_file():
@@ -34,6 +35,10 @@ class Window(ABC):
 
     @abstractmethod
     def add_button(self, text, command, config):
+        pass
+
+    @abstractmethod
+    def add_icon(self, path_to_image, config):
         pass
 
     @abstractmethod
@@ -75,6 +80,14 @@ class TkWindow(Window):
                            width=config['width'],
                            height=config['height'])
         button.pack()
+
+    def add_icon(self, path_to_image, config):
+        image = Image.open(path_to_image)
+        resized_image = image.resize((config['width'], config['height']))
+        photo_image = ImageTk.PhotoImage(resized_image)
+        button = tk.Button(self.__root, image=photo_image)
+        button.image = photo_image
+        button.pack(side='left', anchor='sw')
 
     def set_title(self, title):
         self.__root.title(title)

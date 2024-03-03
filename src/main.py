@@ -43,10 +43,13 @@ if __name__ == '__main__':
 
     window.add_label('QES', labels_config['heading'])
     window.add_label('Emulator', labels_config['subheading'])
+
     window.add_button('Encrypt', lambda: encrypt(), buttons_config['menu'])
     window.add_button('Decrypt', lambda: decrypt(), buttons_config['menu'])
     window.add_button('Sign', lambda: sign(), buttons_config['menu'])
     window.add_button('Check signature', lambda: check_signature(), buttons_config['menu'])
     window.add_button('Exit', lambda: window.exit(), buttons_config['menu'])
+
+    window.add_icon('static/pen-drive-icon.png', buttons_config['menu_icon'])
 
     window.init()

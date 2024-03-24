@@ -16,6 +16,16 @@ def load_public_key(file_path):
     return public_key
 
 
+def load_private_key(file_path):
+    with open(file_path, 'rb') as key_file:
+        private_key = serialization.load_pem_private_key(
+            key_file.read(),
+            password=None,
+            backend=default_backend()
+        )
+    return private_key
+
+
 class Rsa(ABC):
     def __init__(self):
         self._KEY_SIZE = 4096

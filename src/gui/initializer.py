@@ -2,7 +2,7 @@ import json
 from abc import ABC, abstractmethod
 
 from src.gui.window import TkWindow
-from src.encryption import encrypt, decrypt, sign, check_signature
+from src.encryption.encryption import encrypt_file, decrypt_file, sign, check_signature
 
 
 def initialize_gui():
@@ -58,8 +58,8 @@ class TkInitializer(GuiInitializer):
         self._window.add_label('QES', labels_config['heading'])
         self._window.add_label('Emulator', labels_config['subheading'])
 
-        self._window.add_button('Encrypt', lambda: encrypt(), buttons_config['menu'])
-        self._window.add_button('Decrypt', lambda: decrypt(), buttons_config['menu'])
+        self._window.add_button('Encrypt', lambda: encrypt_file(), buttons_config['menu'])
+        self._window.add_button('Decrypt', lambda: decrypt_file(), buttons_config['menu'])
         self._window.add_button('Sign', lambda: sign(), buttons_config['menu'])
         self._window.add_button('Check signature', lambda: check_signature(), buttons_config['menu'])
         self._window.add_button('Exit', lambda: self._window.exit(), buttons_config['menu'])

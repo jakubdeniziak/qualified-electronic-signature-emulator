@@ -1,8 +1,19 @@
 from abc import ABC, abstractmethod
 from datetime import datetime
 
+from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives.asymmetric import rsa
+
+
+def load_public_key(file_path):
+    with open(file_path, 'rb') as key_file:
+        public_key = serialization.load_pem_public_key(
+            key_file.read(),
+            backend=default_backend()
+        )
+
+    return public_key
 
 
 class Rsa(ABC):
@@ -16,6 +27,20 @@ class Rsa(ABC):
     def generate_keys(self):
         pass
 
+    @abstractmethod
+    def _save_public_key(self):
+        pass
+
+
+class CryptographyRsa(Rsa):
+    def generate_keys(self):
+        self._private_key = rsa.generate_private_key(
+            public_exponent=self._PUBLIC_EXPONENT,
+            key_size=self._KEY_SIZE
+        )
+        self._public_key = self._private_key.public_key()
+        self._save_public_key()
+
     def _save_public_key(self):
         now_hash = hash(datetime.now())
         file_name = f'public_key-{now_hash}.pem'
@@ -27,13 +52,3 @@ class Rsa(ABC):
                     format=serialization.PublicFormat.SubjectPublicKeyInfo
                 )
             )
-
-
-class CryptographyRsa(Rsa):
-    def generate_keys(self):
-        self._private_key = rsa.generate_private_key(
-            public_exponent=self._PUBLIC_EXPONENT,
-            key_size=self._KEY_SIZE
-        )
-        self._public_key = self._private_key.public_key()
-        self._save_public_key()

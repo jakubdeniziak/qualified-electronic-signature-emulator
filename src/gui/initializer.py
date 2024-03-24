@@ -19,7 +19,7 @@ class GuiInitializer(ABC):
         self._background_color = None
 
     def _load_config(self):
-        with open('static/visual_identity.json', 'r') as file:
+        with open('../static/visual_identity.json', 'r') as file:
             self._config = json.load(file)
 
     @abstractmethod
@@ -64,4 +64,4 @@ class TkInitializer(GuiInitializer):
         self._window.add_button('Check signature', lambda: check_signature(), buttons_config['menu'])
         self._window.add_button('Exit', lambda: self._window.exit(), buttons_config['menu'])
 
-        self._window.add_icon('static/pen-drive-icon.png', buttons_config['menu_icon'])
+        self._window.add_icon('../static/pen-drive-icon.png', buttons_config['menu_icon'])

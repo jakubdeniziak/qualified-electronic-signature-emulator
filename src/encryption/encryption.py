@@ -3,7 +3,7 @@ import os
 from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.asymmetric import padding
 
-from src.encryption.rsa import load_public_key, load_private_key
+from src.encryption.rsa import load_public_key, load_private_key, CryptographyRsa
 from src.gui.window import choose_file
 
 
@@ -11,6 +11,10 @@ def get_file_name_and_extension(file_path):
     file_name_with_extension = os.path.basename(file_path)
     file_name, file_extension = os.path.splitext(file_name_with_extension)
     return file_name, file_extension
+
+
+def generate_rsa_keys():
+    CryptographyRsa().generate_keys()
 
 
 def encrypt_file():

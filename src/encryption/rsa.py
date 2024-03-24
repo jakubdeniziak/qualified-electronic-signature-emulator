@@ -31,6 +31,10 @@ class Rsa(ABC):
     def _save_public_key(self):
         pass
 
+    @abstractmethod
+    def _save_private_key(self):
+        pass
+
 
 class CryptographyRsa(Rsa):
     def generate_keys(self):
@@ -40,6 +44,7 @@ class CryptographyRsa(Rsa):
         )
         self._public_key = self._private_key.public_key()
         self._save_public_key()
+        self._save_private_key()
 
     def _save_public_key(self):
         now_hash = hash(datetime.now())
@@ -50,5 +55,18 @@ class CryptographyRsa(Rsa):
                 self._public_key.public_bytes(
                     encoding=serialization.Encoding.PEM,
                     format=serialization.PublicFormat.SubjectPublicKeyInfo
+                )
+            )
+
+    def _save_private_key(self):
+        now_hash = hash(datetime.now())
+        file_name = f'private_key-{now_hash}.pem'
+
+        with open(file_name, 'wb') as key_file:
+            key_file.write(
+                self._private_key.private_bytes(
+                    encoding=serialization.Encoding.PEM,
+                    format=serialization.PrivateFormat.PKCS8,
+                    encryption_algorithm=serialization.NoEncryption()
                 )
             )

@@ -1,16 +1,9 @@
-import os
-
 from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.asymmetric import padding
 
-from src.encryption.rsa import load_public_key, load_private_key, CryptographyRsa
+from src.encryption.rsa import CryptographyRsa
 from src.gui.window import choose_file
-
-
-def get_file_name_and_extension(file_path):
-    file_name_with_extension = os.path.basename(file_path)
-    file_name, file_extension = os.path.splitext(file_name_with_extension)
-    return file_name, file_extension
+from src.utils.file_operations import load_from_file, get_file_name_and_extension, save_to_file
 
 
 def generate_rsa_keys():
@@ -19,11 +12,10 @@ def generate_rsa_keys():
 
 def encrypt_file():
     file_path = choose_file()
-    with open(file_path, 'rb') as file:
-        plaintext = file.read()
+    plaintext = load_from_file(file_path)
 
     public_key_path = choose_file()
-    public_key = load_public_key(public_key_path)
+    public_key = CryptographyRsa.load_public_key(public_key_path)
 
     ciphertext = public_key.encrypt(
         plaintext,
@@ -36,17 +28,15 @@ def encrypt_file():
 
     file_name, file_extension = get_file_name_and_extension(file_path)
     encrypted_file_name = f'{file_name}_encrypted{file_extension}'
-    with open(encrypted_file_name, 'wb') as file:
-        file.write(ciphertext)
+    save_to_file(encrypted_file_name, ciphertext)
 
 
 def decrypt_file():
     file_path = choose_file()
-    with open(file_path, 'rb') as file:
-        ciphertext = file.read()
+    ciphertext = load_from_file(file_path)
 
     private_key_path = choose_file()
-    private_key = load_private_key(private_key_path)
+    private_key = CryptographyRsa.load_private_key(private_key_path)
 
     plaintext = private_key.decrypt(
         ciphertext,
@@ -58,8 +48,8 @@ def decrypt_file():
     )
 
     file_name, file_extension = get_file_name_and_extension(file_path)
-    with open(f'{file_name}_decrypted{file_extension}', 'wb') as file:
-        file.write(plaintext)
+    decrypted_file_name = f'{file_name}_decrypted{file_extension}'
+    save_to_file(decrypted_file_name, plaintext)
 
 
 def sign():

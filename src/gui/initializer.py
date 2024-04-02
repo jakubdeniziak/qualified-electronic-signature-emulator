@@ -1,12 +1,9 @@
 import json
 from abc import ABC, abstractmethod
 
+from gui.config_functions import usb_drive_icon_config
 from src.gui.window import TkWindow
 from src.encryption.encryption import encrypt_file, decrypt_file, sign, check_signature, generate_rsa_keys
-
-
-def initialize_gui():
-    pass
 
 
 class GuiInitializer(ABC):
@@ -65,4 +62,4 @@ class TkInitializer(GuiInitializer):
         self._window.add_button('Check signature', lambda: check_signature(), buttons_config['menu'])
         self._window.add_button('Exit', lambda: self._window.exit(), buttons_config['menu'])
 
-        self._window.add_icon('../static/pen-drive-icon.png', buttons_config['menu_icon'])
+        self._window.add_icon('../static/pen-drive-icon.png', buttons_config['menu_icon'], usb_drive_icon_config())

@@ -38,7 +38,7 @@ class Window(ABC):
         pass
 
     @abstractmethod
-    def add_icon(self, path_to_image, config):
+    def add_icon(self, path_to_image, config, style_function=None):
         pass
 
     @abstractmethod
@@ -81,13 +81,16 @@ class TkWindow(Window):
                            height=config['height'])
         button.pack()
 
-    def add_icon(self, path_to_image, config):
+    def add_icon(self, path_to_image, config, style_function=None):
         image = Image.open(path_to_image)
         resized_image = image.resize((config['width'], config['height']))
         photo_image = ImageTk.PhotoImage(resized_image)
         button = tk.Button(self.__root, image=photo_image)
         button.image = photo_image
         button.pack(side='left', anchor='sw')
+        if style_function is not None:
+            button.config(**style_function)
+        return button
 
     def set_title(self, title):
         self.__root.title(title)

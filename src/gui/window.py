@@ -1,7 +1,7 @@
 import tkinter as tk
 
 from abc import ABC, abstractmethod
-from tkinter import filedialog
+from tkinter import filedialog, simpledialog
 from PIL import Image, ImageTk
 
 
@@ -12,6 +12,11 @@ def choose_file():
     else:
         print('No file selected')
         return None
+
+
+def input_password():
+    password = simpledialog.askstring("Password", "Enter your password:", show='*')
+    return password
 
 
 class Window(ABC):

@@ -6,6 +6,12 @@ def save_to_file(file_name, content):
         file.write(content)
 
 
+def save_multiple_to_file(file_name, content):
+    with open(file_name, 'wb') as file:
+        for chunk in content:
+            file.write(chunk)
+
+
 def load_from_file(file_name):
     with open(file_name, 'rb') as file:
         return file.read()

@@ -5,7 +5,9 @@ from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives.asymmetric import rsa
 
-from src.utils.file_operations import save_to_file, load_from_file
+from encryption.aes import CryptographyAes
+from gui.window import input_password
+from src.utils.file_operations import save_to_file, load_from_file, save_multiple_to_file
 
 
 class Rsa(ABC):
@@ -61,15 +63,28 @@ class CryptographyRsa(Rsa):
         )
 
     def _save_private_key(self):
+        aes = CryptographyAes()
+        passphrase = input_password().encode('utf-8')
+        salt, key = aes.derive_key_from_passphrase(passphrase)
+        initialization_vector, encrypted_private_key = aes.encrypt(key, self.__get_private_key_bytes())
+
         file_name = f'private_key-{self._key_id}.pem'
-        save_to_file(
+        save_multiple_to_file(
             file_name=file_name,
-            content=self._private_key.private_bytes(
-                encoding=serialization.Encoding.PEM,
-                format=serialization.PrivateFormat.PKCS8,
-                encryption_algorithm=serialization.NoEncryption()
+            content=(
+                salt,
+                initialization_vector,
+                encrypted_private_key
             )
         )
+
+    def __get_private_key_bytes(self):
+        private_key_bytes = self._private_key.private_bytes(
+            encoding=serialization.Encoding.PEM,
+            format=serialization.PrivateFormat.PKCS8,
+            encryption_algorithm=serialization.NoEncryption()
+        )
+        return private_key_bytes
 
     @staticmethod
     def load_public_key(file_path):

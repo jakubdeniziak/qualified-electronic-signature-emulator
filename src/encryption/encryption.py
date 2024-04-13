@@ -2,19 +2,20 @@ from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.asymmetric import padding
 
 from src.encryption.rsa import CryptographyRsa
-from src.gui.window import choose_file
+from src.gui.window import choose_file, choose_directory
 from src.utils.file_operations import load_from_file, get_file_name_and_extension, save_to_file
 
 
 def generate_rsa_keys():
-    CryptographyRsa().generate_keys()
+    directory_path = choose_directory()
+    CryptographyRsa().generate_keys(directory_path)
 
 
 def encrypt_file():
-    file_path = choose_file()
+    file_path = choose_file('Choose file to encrypt')
     plaintext = load_from_file(file_path)
 
-    public_key_path = choose_file()
+    public_key_path = choose_file('Choose public key')
     public_key = CryptographyRsa.load_public_key(public_key_path)
 
     ciphertext = public_key.encrypt(
@@ -32,10 +33,10 @@ def encrypt_file():
 
 
 def decrypt_file():
-    file_path = choose_file()
+    file_path = choose_file('Choose file to decrypt')
     ciphertext = load_from_file(file_path)
 
-    private_key_path = choose_file()
+    private_key_path = choose_file('Choose private key')
     private_key = CryptographyRsa.load_private_key(private_key_path)
 
     plaintext = private_key.decrypt(

@@ -26,6 +26,7 @@ class TkInitializer(GuiInitializer):
 
         self._window.add_label('QES Emulator', labels_config['heading'])
         self._window.add_label('Key generation', labels_config['subheading'])
+        self._window.add_label('', labels_config['subheading'])
 
         self._window.add_button('Generate RSA Keys', lambda: generate_rsa_keys(), buttons_config['menu'])
         self._window.add_button('Exit', lambda: self._window.exit(), buttons_config['menu'])

@@ -14,6 +14,16 @@ def choose_file():
         return None
 
 
+def choose_directory():
+    initial_directory = '/media'
+    directory_path = filedialog.askdirectory(title='Choose directory to save keys', initialdir=initial_directory)
+    if directory_path:
+        return directory_path
+    else:
+        print('No directory selected')
+        return None
+
+
 def input_password():
     password = simpledialog.askstring("Password", "Enter your password:", show='*')
     return password

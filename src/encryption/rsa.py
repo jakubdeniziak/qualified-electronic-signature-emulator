@@ -17,9 +17,10 @@ class Rsa(ABC):
         self._private_key = None
         self._public_key = None
         self._key_id = None
+        self._directory_path = None
 
     @abstractmethod
-    def generate_keys(self):
+    def generate_keys(self, directory_path):
         pass
 
     @abstractmethod
@@ -42,13 +43,14 @@ class Rsa(ABC):
 
 
 class CryptographyRsa(Rsa):
-    def generate_keys(self):
+    def generate_keys(self, directory_path):
         self._private_key = rsa.generate_private_key(
             public_exponent=self._PUBLIC_EXPONENT,
             key_size=self._KEY_SIZE
         )
         self._public_key = self._private_key.public_key()
         self._key_id = hash(datetime.now())
+        self._directory_path = directory_path
         self._save_public_key()
         self._save_private_key()
 
@@ -59,7 +61,8 @@ class CryptographyRsa(Rsa):
             content=self._public_key.public_bytes(
                 encoding=serialization.Encoding.PEM,
                 format=serialization.PublicFormat.SubjectPublicKeyInfo
-            )
+            ),
+            directory_path=self._directory_path
         )
 
     def _save_private_key(self):
@@ -75,7 +78,8 @@ class CryptographyRsa(Rsa):
                 salt,
                 initialization_vector,
                 encrypted_private_key
-            )
+            ),
+            directory_path=self._directory_path
         )
 
     def __get_private_key_bytes(self):

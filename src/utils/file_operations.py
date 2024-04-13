@@ -2,13 +2,15 @@ import os
 import pickle
 
 
-def save_to_file(file_name, content):
-    with open(file_name, 'wb') as file:
+def save_to_file(file_name, content, directory_path=None):
+    full_file_path = os.path.join(directory_path, file_name)
+    with open(full_file_path, 'wb') as file:
         file.write(content)
 
 
-def serialize(file_name, content):
-    with open(file_name, 'wb') as file:
+def serialize(file_name, content, directory_path=None):
+    full_file_path = os.path.join(directory_path, file_name)
+    with open(full_file_path, 'wb') as file:
         pickle.dump(content, file)
 
 

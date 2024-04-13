@@ -2,12 +2,13 @@ from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.asymmetric import padding
 
 from src.encryption.rsa import CryptographyRsa
-from src.gui.window import choose_file
+from src.gui.window import choose_file, choose_directory
 from src.utils.file_operations import load_from_file, get_file_name_and_extension, save_to_file
 
 
 def generate_rsa_keys():
-    CryptographyRsa().generate_keys()
+    directory_path = choose_directory()
+    CryptographyRsa().generate_keys(directory_path)
 
 
 def encrypt_file():

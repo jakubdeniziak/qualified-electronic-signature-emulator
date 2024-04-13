@@ -12,10 +12,10 @@ def generate_rsa_keys():
 
 
 def encrypt_file():
-    file_path = choose_file()
+    file_path = choose_file('Choose file to encrypt')
     plaintext = load_from_file(file_path)
 
-    public_key_path = choose_file()
+    public_key_path = choose_file('Choose public key')
     public_key = CryptographyRsa.load_public_key(public_key_path)
 
     ciphertext = public_key.encrypt(
@@ -33,10 +33,10 @@ def encrypt_file():
 
 
 def decrypt_file():
-    file_path = choose_file()
+    file_path = choose_file('Choose file to decrypt')
     ciphertext = load_from_file(file_path)
 
-    private_key_path = choose_file()
+    private_key_path = choose_file('Choose private key')
     private_key = CryptographyRsa.load_private_key(private_key_path)
 
     plaintext = private_key.decrypt(

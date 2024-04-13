@@ -3,13 +3,19 @@ import pickle
 
 
 def save_to_file(file_name, content, directory_path=None):
-    full_file_path = os.path.join(directory_path, file_name)
+    if directory_path is None:
+        full_file_path = file_name
+    else:
+        full_file_path = os.path.join(directory_path, file_name)
     with open(full_file_path, 'wb') as file:
         file.write(content)
 
 
 def serialize(file_name, content, directory_path=None):
-    full_file_path = os.path.join(directory_path, file_name)
+    if directory_path is None:
+        full_file_path = file_name
+    else:
+        full_file_path = os.path.join(directory_path, file_name)
     with open(full_file_path, 'wb') as file:
         pickle.dump(content, file)
 

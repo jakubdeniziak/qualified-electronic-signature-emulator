@@ -5,8 +5,8 @@ from tkinter import filedialog, simpledialog
 from PIL import Image, ImageTk
 
 
-def choose_file():
-    file_path = tk.filedialog.askopenfilename()
+def choose_file(title=None):
+    file_path = tk.filedialog.askopenfilename(title=title)
     if file_path:
         return file_path
     else:

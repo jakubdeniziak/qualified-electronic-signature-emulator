@@ -3,6 +3,8 @@ from gui.config_functions import usb_drive_icon_config
 from gui.initializer import GuiInitializer
 from gui.window import TkWindow
 
+MESSAGE_DISPLAY_TIME_IN_MILLIS = 2000
+
 
 class TkInitializer(GuiInitializer):
     def __init__(self):
@@ -41,3 +43,9 @@ class TkInitializer(GuiInitializer):
 
     def display_message(self, message):
         self._message_box.config(text=message)
+        if message == '':
+            return
+        self._message_box.after(MESSAGE_DISPLAY_TIME_IN_MILLIS, self.display_message, '')
+
+    def __clear_message(self):
+        self._message_box.config(text='a')

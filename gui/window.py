@@ -5,22 +5,20 @@ from tkinter import filedialog, simpledialog
 from PIL import Image, ImageTk
 
 
-def choose_file(gui_controller, title=None):
+def choose_file(title=None):
     file_path = tk.filedialog.askopenfilename(title=title)
     if file_path:
         return file_path
     else:
-        gui_controller.display_message('No file selected')
         return None
 
 
-def choose_directory(gui_controller, title=None):
+def choose_directory(title=None):
     initial_directory = '/media'
     directory_path = filedialog.askdirectory(title=title, initialdir=initial_directory)
     if directory_path:
         return directory_path
     else:
-        gui_controller.display_message('No directory selected')
         return None
 
 

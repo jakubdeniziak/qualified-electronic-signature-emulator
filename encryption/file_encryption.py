@@ -7,15 +7,24 @@ from utils.file_operations import load_from_file, get_file_name_and_extension, s
 
 
 def generate_rsa_keys(gui_controller):
-    directory_path = choose_directory(gui_controller, 'Choose directory to save keys')
+    directory_path = choose_directory('Choose directory to save keys')
+    if directory_path is None:
+        gui_controller.display_message('No directory selected')
+        return
     CryptographyRsa().generate_keys(directory_path)
 
 
 def encrypt_file(gui_controller):
-    file_path = choose_file(gui_controller, 'Choose file to encrypt')
+    file_path = choose_file('Choose file to encrypt')
+    if file_path is None:
+        gui_controller.display_message('No file selected')
+        return
     plaintext = load_from_file(file_path)
 
-    public_key_path = choose_file(gui_controller, 'Choose public key')
+    public_key_path = choose_file('Choose public key')
+    if file_path is None:
+        gui_controller.display_message('No file selected')
+        return
     public_key = CryptographyRsa.load_public_key(public_key_path)
 
     ciphertext = public_key.encrypt(
@@ -33,10 +42,16 @@ def encrypt_file(gui_controller):
 
 
 def decrypt_file(gui_controller):
-    file_path = choose_file(gui_controller, 'Choose file to decrypt')
+    file_path = choose_file('Choose file to decrypt')
+    if file_path is None:
+        gui_controller.display_message('No file selected')
+        return
     ciphertext = load_from_file(file_path)
 
-    private_key_path = choose_file(gui_controller, 'Choose private key')
+    private_key_path = choose_file('Choose private key')
+    if file_path is None:
+        gui_controller.display_message('No file selected')
+        return
     private_key = CryptographyRsa.load_private_key(private_key_path)
 
     plaintext = private_key.decrypt(

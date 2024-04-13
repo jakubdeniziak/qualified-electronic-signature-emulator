@@ -2,7 +2,7 @@ from gui.config_functions import usb_drive_icon_config
 
 from gui.initializer import GuiInitializer
 from gui.window import TkWindow
-from encryption.file_encryption import encrypt_file, decrypt_file, sign, check_signature, generate_rsa_keys
+from encryption.file_encryption import encrypt_file, decrypt_file, sign, check_signature
 
 
 class TkInitializer(GuiInitializer):
@@ -29,7 +29,6 @@ class TkInitializer(GuiInitializer):
         self._window.add_label('Emulator', labels_config['subheading'])
         self._window.add_label('', labels_config['subheading'])
 
-        self._window.add_button('Generate RSA Keys', lambda: generate_rsa_keys(), buttons_config['menu'])
         self._window.add_button('Encrypt', lambda: encrypt_file(), buttons_config['menu'])
         self._window.add_button('Decrypt', lambda: decrypt_file(), buttons_config['menu'])
         self._window.add_button('Sign', lambda: sign(), buttons_config['menu'])

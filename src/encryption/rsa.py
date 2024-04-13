@@ -7,7 +7,7 @@ from cryptography.hazmat.primitives.asymmetric import rsa
 
 from encryption.aes import CryptographyAes
 from gui.window import input_password
-from src.utils.file_operations import save_to_file, load_from_file, save_multiple_to_file
+from src.utils.file_operations import save_to_file, load_from_file, serialize, deserialize
 
 
 class Rsa(ABC):
@@ -69,7 +69,7 @@ class CryptographyRsa(Rsa):
         initialization_vector, encrypted_private_key = aes.encrypt(key, self.__get_private_key_bytes())
 
         file_name = f'private_key-{self._key_id}.pem'
-        save_multiple_to_file(
+        serialize(
             file_name=file_name,
             content=(
                 salt,
@@ -96,8 +96,16 @@ class CryptographyRsa(Rsa):
 
     @staticmethod
     def load_private_key(file_path):
+        (salt, initialization_vector, encrypted_private_key) = deserialize(file_path)
+
+        passphrase = input_password().encode('utf-8')
+
+        aes = CryptographyAes()
+        salt, key = aes.derive_key_from_passphrase(passphrase, salt)
+        rsa_private_key = aes.decrypt(key, initialization_vector, encrypted_private_key)
+
         private_key = serialization.load_pem_private_key(
-            load_from_file(file_path),
+            rsa_private_key,
             password=None,
             backend=default_backend()
         )

@@ -1,4 +1,5 @@
 import os
+import pickle
 
 
 def save_to_file(file_name, content):
@@ -6,10 +7,9 @@ def save_to_file(file_name, content):
         file.write(content)
 
 
-def save_multiple_to_file(file_name, content):
+def serialize(file_name, content):
     with open(file_name, 'wb') as file:
-        for chunk in content:
-            file.write(chunk + b'\n')
+        pickle.dump(content, file)
 
 
 def load_from_file(file_name):
@@ -17,10 +17,10 @@ def load_from_file(file_name):
         return file.read()
 
 
-def load_multiple_from_file(file_name):
+def deserialize(file_name):
     with open(file_name, 'rb') as file:
-        for line in file:
-            yield line.rstrip(b'\n')
+        data = pickle.load(file)
+    return data
 
 
 def get_file_name_and_extension(file_path):

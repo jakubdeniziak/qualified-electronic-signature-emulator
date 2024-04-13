@@ -37,8 +37,9 @@ class Aes(ABC):
 
 
 class CryptographyAes(Aes):
-    def derive_key_from_passphrase(self, passphrase):
-        salt = os.urandom(self._LENGTH_OF_SALT_IN_BYTES)
+    def derive_key_from_passphrase(self, passphrase, salt=None):
+        if salt is None:
+            salt = os.urandom(self._LENGTH_OF_SALT_IN_BYTES)
         kdf = PBKDF2HMAC(
             algorithm=hashes.SHA256(),
             length=self._LENGTH_OF_KEY_IN_BYTES,

@@ -8,6 +8,7 @@ class TkInitializer(GuiInitializer):
     def __init__(self):
         super().__init__()
         self._window = TkWindow()
+        self._message_box = None
         self._load_config()
         self._set_window_params()
         self._add_content()
@@ -28,8 +29,15 @@ class TkInitializer(GuiInitializer):
         self._window.add_label('Key generation', labels_config['subheading'])
         self._window.add_label('', labels_config['subheading'])
 
-        self._window.add_button('Generate RSA Keys', lambda: generate_rsa_keys(), buttons_config['menu'])
+        self._message_box = self._window.add_label('', labels_config['normal'])
+        self._window.add_label('', labels_config['normal'])
+
+        self._window.add_button('Generate RSA Keys', lambda: generate_rsa_keys(self), buttons_config['menu'])
+
         self._window.add_button('Exit', lambda: self._window.exit(), buttons_config['menu'])
 
         self._window.add_icon('../../gui/static/pen-drive-icon.png', buttons_config['menu_icon'],
                               usb_drive_icon_config())
+
+    def display_message(self, message):
+        self._message_box.config(text=message)

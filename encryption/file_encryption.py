@@ -6,16 +6,16 @@ from gui.window import choose_file, choose_directory
 from utils.file_operations import load_from_file, get_file_name_and_extension, save_to_file
 
 
-def generate_rsa_keys():
-    directory_path = choose_directory()
+def generate_rsa_keys(gui_controller):
+    directory_path = choose_directory(gui_controller, 'Choose directory to save keys')
     CryptographyRsa().generate_keys(directory_path)
 
 
-def encrypt_file():
-    file_path = choose_file('Choose file to encrypt')
+def encrypt_file(gui_controller):
+    file_path = choose_file(gui_controller, 'Choose file to encrypt')
     plaintext = load_from_file(file_path)
 
-    public_key_path = choose_file('Choose public key')
+    public_key_path = choose_file(gui_controller, 'Choose public key')
     public_key = CryptographyRsa.load_public_key(public_key_path)
 
     ciphertext = public_key.encrypt(
@@ -32,11 +32,11 @@ def encrypt_file():
     save_to_file(encrypted_file_name, ciphertext)
 
 
-def decrypt_file():
-    file_path = choose_file('Choose file to decrypt')
+def decrypt_file(gui_controller):
+    file_path = choose_file(gui_controller, 'Choose file to decrypt')
     ciphertext = load_from_file(file_path)
 
-    private_key_path = choose_file('Choose private key')
+    private_key_path = choose_file(gui_controller, 'Choose private key')
     private_key = CryptographyRsa.load_private_key(private_key_path)
 
     plaintext = private_key.decrypt(
@@ -53,11 +53,11 @@ def decrypt_file():
     save_to_file(decrypted_file_name, plaintext)
 
 
-def sign():
-    file_path = choose_file()
+def sign(gui_controller):
+    file_path = choose_file(gui_controller)
     print(file_path)
 
 
-def check_signature():
-    file_path = choose_file()
+def check_signature(gui_controller):
+    file_path = choose_file(gui_controller)
     print(file_path)

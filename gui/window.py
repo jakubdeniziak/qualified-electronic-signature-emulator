@@ -5,22 +5,22 @@ from tkinter import filedialog, simpledialog
 from PIL import Image, ImageTk
 
 
-def choose_file(title=None):
+def choose_file(gui_controller, title=None):
     file_path = tk.filedialog.askopenfilename(title=title)
     if file_path:
         return file_path
     else:
-        print('No file selected')
+        gui_controller.display_message('No file selected')
         return None
 
 
-def choose_directory():
+def choose_directory(gui_controller, title=None):
     initial_directory = '/media'
-    directory_path = filedialog.askdirectory(title='Choose directory to save keys', initialdir=initial_directory)
+    directory_path = filedialog.askdirectory(title=title, initialdir=initial_directory)
     if directory_path:
         return directory_path
     else:
-        print('No directory selected')
+        gui_controller.display_message('No directory selected')
         return None
 
 
@@ -87,6 +87,7 @@ class TkWindow(Window):
                          foreground=config['text_color'],
                          font=(config['font'], config['font_size']))
         label.pack()
+        return label
 
     def add_button(self, text, command, config):
         button = tk.Button(self.__root,

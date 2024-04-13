@@ -13,6 +13,11 @@
       "font": "Arial",
       "font_size": 32,
       "text_color": "white"
+    },
+    "normal": {
+      "font": "Arial",
+      "font_size": 16,
+      "text_color": "white"
     }
   },
   "buttons": {

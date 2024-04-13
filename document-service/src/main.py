@@ -1,4 +1,4 @@
-from src.gui.initializer import TkInitializer
+from gui.initializer import TkInitializer
 
 if __name__ == '__main__':
     gui_initializer = TkInitializer()

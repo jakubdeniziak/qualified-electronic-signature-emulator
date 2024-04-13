@@ -2,8 +2,8 @@ import json
 from abc import ABC, abstractmethod
 
 from gui.config_functions import usb_drive_icon_config
-from src.gui.window import TkWindow
-from src.encryption.encryption import encrypt_file, decrypt_file, sign, check_signature, generate_rsa_keys
+from gui.window import TkWindow
+from encryption.file_encryption import encrypt_file, decrypt_file, sign, check_signature, generate_rsa_keys
 
 
 class GuiInitializer(ABC):

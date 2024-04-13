@@ -7,7 +7,7 @@ from cryptography.hazmat.primitives.asymmetric import rsa
 
 from encryption.aes import CryptographyAes
 from gui.window import input_password
-from src.utils.file_operations import save_to_file, load_from_file, serialize, deserialize
+from utils.file_operations import save_to_file, load_from_file, serialize, deserialize
 
 
 class Rsa(ABC):

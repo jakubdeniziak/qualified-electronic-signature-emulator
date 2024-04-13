@@ -1,35 +1,7 @@
-import json
-from abc import ABC, abstractmethod
-
 from gui.config_functions import usb_drive_icon_config
+from gui.initializer import GuiInitializer
 from gui.window import TkWindow
 from encryption.file_encryption import generate_rsa_keys
-
-
-class GuiInitializer(ABC):
-    def __init__(self):
-        self._window = None
-        self._config = None
-        self._app_name = None
-        self._width = None
-        self._height = None
-        self._background_color = None
-
-    def _load_config(self):
-        with open('../static/visual_identity.json', 'r') as file:
-            self._config = json.load(file)
-
-    @abstractmethod
-    def initialize(self):
-        pass
-
-    @abstractmethod
-    def _set_window_params(self):
-        pass
-
-    @abstractmethod
-    def _add_content(self):
-        pass
 
 
 class TkInitializer(GuiInitializer):
@@ -58,4 +30,5 @@ class TkInitializer(GuiInitializer):
         self._window.add_button('Generate RSA Keys', lambda: generate_rsa_keys(), buttons_config['menu'])
         self._window.add_button('Exit', lambda: self._window.exit(), buttons_config['menu'])
 
-        self._window.add_icon('../static/pen-drive-icon.png', buttons_config['menu_icon'], usb_drive_icon_config())
+        self._window.add_icon('../../gui/static/pen-drive-icon.png', buttons_config['menu_icon'],
+                              usb_drive_icon_config())

@@ -1,7 +1,7 @@
+from encryption.file_encryption import generate_rsa_keys
 from gui.config_functions import usb_drive_icon_config
 from gui.initializer import GuiInitializer
 from gui.window import TkWindow
-from encryption.file_encryption import generate_rsa_keys
 
 
 class TkInitializer(GuiInitializer):

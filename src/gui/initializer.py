@@ -1,12 +1,9 @@
 import json
 from abc import ABC, abstractmethod
 
+from gui.config_functions import usb_drive_icon_config
 from src.gui.window import TkWindow
-from src.encryption import encrypt, decrypt, sign, check_signature
-
-
-def initialize_gui():
-    pass
+from src.encryption.encryption import encrypt_file, decrypt_file, sign, check_signature, generate_rsa_keys
 
 
 class GuiInitializer(ABC):
@@ -19,7 +16,7 @@ class GuiInitializer(ABC):
         self._background_color = None
 
     def _load_config(self):
-        with open('static/visual_identity.json', 'r') as file:
+        with open('../static/visual_identity.json', 'r') as file:
             self._config = json.load(file)
 
     @abstractmethod
@@ -58,10 +55,11 @@ class TkInitializer(GuiInitializer):
         self._window.add_label('QES', labels_config['heading'])
         self._window.add_label('Emulator', labels_config['subheading'])
 
-        self._window.add_button('Encrypt', lambda: encrypt(), buttons_config['menu'])
-        self._window.add_button('Decrypt', lambda: decrypt(), buttons_config['menu'])
+        self._window.add_button('Generate RSA Keys', lambda: generate_rsa_keys(), buttons_config['menu'])
+        self._window.add_button('Encrypt', lambda: encrypt_file(), buttons_config['menu'])
+        self._window.add_button('Decrypt', lambda: decrypt_file(), buttons_config['menu'])
         self._window.add_button('Sign', lambda: sign(), buttons_config['menu'])
         self._window.add_button('Check signature', lambda: check_signature(), buttons_config['menu'])
         self._window.add_button('Exit', lambda: self._window.exit(), buttons_config['menu'])
 
-        self._window.add_icon('static/pen-drive-icon.png', buttons_config['menu_icon'])
+        self._window.add_icon('../static/pen-drive-icon.png', buttons_config['menu_icon'], usb_drive_icon_config())

@@ -11,7 +11,12 @@ def generate_rsa_keys(gui_controller):
     if directory_path is None:
         gui_controller.display_message('No directory selected')
         return
-    CryptographyRsa().generate_keys(directory_path)
+    try:
+        CryptographyRsa().generate_keys(directory_path)
+    except Exception as e:
+        gui_controller.display_message(e)
+        return
+    gui_controller.display_message('Keys generated')
 
 
 def encrypt_file(gui_controller):

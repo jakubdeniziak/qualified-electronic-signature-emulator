@@ -67,7 +67,10 @@ class CryptographyRsa(Rsa):
 
     def _save_private_key(self):
         aes = CryptographyAes()
-        passphrase = input_password().encode('utf-8')
+        passphrase = input_password()
+        if passphrase is None:
+            raise Exception("No password selected")
+        passphrase = passphrase.encode('utf-8')
         salt, key = aes.derive_key_from_passphrase(passphrase)
         initialization_vector, encrypted_private_key = aes.encrypt(key, self.__get_private_key_bytes())
 

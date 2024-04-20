@@ -35,3 +35,10 @@ def get_file_name_and_extension(file_path):
     file_name_with_extension = os.path.basename(file_path)
     file_name, file_extension = os.path.splitext(file_name_with_extension)
     return file_name, file_extension
+
+
+def get_document_data(file_path):
+    file_size = os.path.getsize(file_path)
+    file_name, file_extension = get_file_name_and_extension(file_path)
+    modification_date = os.path.getmtime(file_path)
+    return file_size, file_extension, modification_date

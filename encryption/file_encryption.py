@@ -120,6 +120,7 @@ def sign(gui_controller):
 
     xml_data = bytes(create_xml(tags).encode('utf-8'))
     save_to_file('signature.xml', xml_data)
+    gui_controller.display_message('File signed successfully')
 
 
 def check_signature(gui_controller):

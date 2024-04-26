@@ -1,9 +1,20 @@
+import hashlib
+import os
+from datetime import datetime
+
 from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.asymmetric import padding
 
 from encryption.rsa import CryptographyRsa
 from gui.window import choose_file, choose_directory
-from utils.file_operations import load_from_file, get_file_name_and_extension, save_to_file
+from utils.file_operations import load_from_file, get_file_name_and_extension, save_to_file, get_document_data
+from utils.xml_handler import create_xml
+
+
+def compute_document_hash(document_path):
+    document_content = load_from_file(document_path)
+    document_hash = hashlib.sha256(document_content).hexdigest()
+    return document_hash
 
 
 def generate_rsa_keys(gui_controller):
@@ -74,8 +85,41 @@ def decrypt_file(gui_controller):
 
 
 def sign(gui_controller):
-    file_path = choose_file(gui_controller)
-    print(file_path)
+    file_path = choose_file('Choose file to sign')
+
+    file_size, file_extension, modification_date = get_document_data(file_path)
+    username = os.getlogin()
+    timestamp = datetime.now()
+
+    file_hash = compute_document_hash(file_path)
+
+    private_key_path = choose_file('Choose private key')
+    if private_key_path is None:
+        gui_controller.display_message('No private key selected')
+        return
+
+    private_key = CryptographyRsa.load_private_key(private_key_path)
+
+    encrypted_file_hash = private_key.sign(
+        bytes(file_hash.encode('utf-8')),
+        padding.PSS(
+            mgf=padding.MGF1(hashes.SHA256()),
+            salt_length=padding.PSS.MAX_LENGTH
+        ),
+        hashes.SHA256()
+    )
+
+    tags = {
+        'FileSize': file_size,
+        'FileExtension': file_extension,
+        'ModificationDate': modification_date,
+        'DocumentHash': encrypted_file_hash,
+        'UserInfo': username,
+        'Timestamp': timestamp
+    }
+
+    xml_data = bytes(create_xml(tags).encode('utf-8'))
+    save_to_file('signature.xml', xml_data)
 
 
 def check_signature(gui_controller):

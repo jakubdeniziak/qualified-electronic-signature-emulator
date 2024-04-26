@@ -9,3 +9,11 @@ def create_xml(tags):
     xml_str = ElementTree.tostring(signature, encoding='unicode', method='xml')
     pretty_xml = minidom.parseString(xml_str).toprettyxml(indent='\t')
     return pretty_xml
+
+
+def parse_xml(xml_string):
+    root = ElementTree.fromstring(xml_string)
+    data_dict = {}
+    for child in root:
+        data_dict[child.tag] = child.text
+    return data_dict

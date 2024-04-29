@@ -10,17 +10,15 @@ def choose_file(title=None):
     if file_path:
         return file_path
     else:
-        print('No file selected')
         return None
 
 
-def choose_directory():
+def choose_directory(title=None):
     initial_directory = '/media'
-    directory_path = filedialog.askdirectory(title='Choose directory to save keys', initialdir=initial_directory)
+    directory_path = filedialog.askdirectory(title=title, initialdir=initial_directory)
     if directory_path:
         return directory_path
     else:
-        print('No directory selected')
         return None
 
 
@@ -87,6 +85,7 @@ class TkWindow(Window):
                          foreground=config['text_color'],
                          font=(config['font'], config['font_size']))
         label.pack()
+        return label
 
     def add_button(self, text, command, config):
         button = tk.Button(self.__root,

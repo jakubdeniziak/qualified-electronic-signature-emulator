@@ -98,6 +98,9 @@ def sign(gui_controller):
     global encrypted_hash
 
     file_path = choose_file('Choose file to sign')
+    if file_path is None:
+        gui_controller.display_message('No file selected')
+        return
 
     file_size, file_extension, modification_date = get_document_data(file_path)
     username = os.getlogin()

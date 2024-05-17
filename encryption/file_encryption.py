@@ -130,8 +130,9 @@ def sign(gui_controller):
         'Timestamp': timestamp
     }
 
+    file_dir = os.path.dirname(file_path)
     xml_data = bytes(create_xml(tags).encode('utf-8'))
-    save_to_file('signature.xml', xml_data)
+    save_to_file('signature.xml', xml_data, file_dir)
     gui_controller.display_message('File signed successfully')
 
 

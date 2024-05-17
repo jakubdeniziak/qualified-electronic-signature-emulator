@@ -61,6 +61,8 @@ def encrypt_file(gui_controller):
     encrypted_file_name = f'{file_name}_encrypted{file_extension}'
     save_to_file(encrypted_file_name, ciphertext, file_dir)
 
+    gui_controller.display_message('File encrypted successfully')
+
 
 def decrypt_file(gui_controller):
     file_path = choose_file('Choose file to decrypt')
@@ -88,6 +90,8 @@ def decrypt_file(gui_controller):
     file_name, file_extension = get_file_name_and_extension(file_path)
     decrypted_file_name = f'{file_name}_decrypted{file_extension}'
     save_to_file(decrypted_file_name, plaintext, file_dir)
+
+    gui_controller.display_message('File decrypted successfully')
 
 
 def sign(gui_controller):

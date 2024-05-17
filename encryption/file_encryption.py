@@ -134,7 +134,7 @@ def sign(gui_controller):
     }
 
     file_dir = os.path.dirname(file_path)
-    xml_data = bytes(create_xml(tags).encode('utf-8'))
+    xml_data = create_xml(tags).encode('utf-8')
     save_to_file('signature.xml', xml_data, file_dir)
     gui_controller.display_message('File signed successfully')
 

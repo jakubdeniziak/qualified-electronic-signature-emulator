@@ -1,3 +1,4 @@
+import base64
 import hashlib
 import os
 from datetime import datetime
@@ -10,9 +11,6 @@ from encryption.rsa import CryptographyRsa
 from gui.window import choose_file, choose_directory
 from utils.file_operations import load_from_file, get_file_name_and_extension, save_to_file, get_document_data
 from utils.xml_handler import create_xml, parse_xml
-
-
-encrypted_hash = None
 
 
 def compute_document_hash(document_path):
@@ -95,8 +93,6 @@ def decrypt_file(gui_controller):
 
 
 def sign(gui_controller):
-    global encrypted_hash
-
     file_path = choose_file('Choose file to sign')
     if file_path is None:
         gui_controller.display_message('No file selected')
@@ -124,11 +120,13 @@ def sign(gui_controller):
         hashes.SHA256()
     )
 
+    encrypted_hash_base64 = base64.b64encode(encrypted_hash).decode('utf-8')
+
     tags = {
         'FileSize': file_size,
         'FileExtension': file_extension,
         'ModificationDate': modification_date,
-        'DocumentHash': encrypted_hash,
+        'DocumentHash': encrypted_hash_base64,
         'UserInfo': username,
         'Timestamp': timestamp
     }
@@ -140,8 +138,6 @@ def sign(gui_controller):
 
 
 def check_signature(gui_controller):
-    global encrypted_hash
-
     file_path = choose_file('Choose file to verify')
     if file_path is None:
         gui_controller.display_message('No file selected')
@@ -162,6 +158,9 @@ def check_signature(gui_controller):
     public_key = CryptographyRsa.load_public_key(public_key_path)
 
     expected_hash = compute_document_hash(file_path).encode('utf-8')
+
+    encrypted_hash_base64 = signature_data['DocumentHash']
+    encrypted_hash = base64.b64decode(encrypted_hash_base64.encode('utf-8'))
 
     try:
         public_key.verify(

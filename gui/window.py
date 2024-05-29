@@ -6,7 +6,8 @@ from PIL import Image, ImageTk
 
 
 def choose_file(title=None):
-    file_path = tk.filedialog.askopenfilename(title=title)
+    initial_directory = '/media'
+    file_path = tk.filedialog.askopenfilename(title=title, initialdir=initial_directory)
     if file_path:
         return file_path
     else:
